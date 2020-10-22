@@ -33,6 +33,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         btnNuevaDireccion = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txaDireccion = new javax.swing.JTextArea();
+        btnCerrarSesion = new javax.swing.JButton();
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Email");
@@ -51,6 +52,11 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         lblTitulo.setText("Perfil de Usuario");
 
         btnCambiarContrasena.setText("Cambiar contraseña");
+        btnCambiarContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarContrasenaActionPerformed(evt);
+            }
+        });
 
         btnActualizar.setText("Actualizar");
 
@@ -65,6 +71,13 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         txaDireccion.setColumns(20);
         txaDireccion.setRows(5);
         jScrollPane1.setViewportView(txaDireccion);
+
+        btnCerrarSesion.setText("Cerrar Sesión");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,7 +110,8 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                                         .addGap(24, 24, 24)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnCambiarContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnNuevaDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(btnNuevaDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(48, 48, 48))))
         );
         layout.setVerticalGroup(
@@ -113,16 +127,20 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                 .addComponent(lblNombre)
                 .addGap(18, 18, 18)
                 .addComponent(txbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(btnNuevaDireccion)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCerrarSesion))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(18, 22, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCambiarContrasena)
                             .addComponent(btnActualizar))
                         .addGap(33, 33, 33)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnNuevaDireccion))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,6 +158,18 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnCambiarContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarContrasenaActionPerformed
+        // TODO add your handling code here:
+        CambioContra ventana = new CambioContra();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnCambiarContrasenaActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        Identificate ventana = new Identificate ();
+        ventana.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -193,6 +223,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCambiarContrasena;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnNuevaDireccion;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;

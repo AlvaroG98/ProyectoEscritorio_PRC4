@@ -43,4 +43,21 @@ public class docWriter {
         }
         return resultado;
     }
+    public String LeerContra()
+    {
+        String resultado = "";
+        FileReader in = null;
+        try {
+            in = new FileReader("tmp.txt");
+            BufferedReader br = new BufferedReader(in);
+
+            br.readLine();
+            resultado = br.readLine();
+            
+            in.close();
+        } catch (IOException e) {
+            e.getCause();
+        }
+        return resultado;
+    }
 }

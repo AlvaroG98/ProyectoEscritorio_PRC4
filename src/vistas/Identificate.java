@@ -137,7 +137,7 @@ public class Identificate extends javax.swing.JFrame {
                     if (usuario.equals(txbEmail.getText()) && pass.equals(txbContrasena.getText())) {
                         PerfilDeUsuario ventana = new PerfilDeUsuario();
                         ventana.setVisible(true);
-                        dw.escribir(usuario);
+                        dw.escribir(usuario + '\n' + pass);
                         dispose();
                     }
                     else{

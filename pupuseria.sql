@@ -67,7 +67,7 @@ CREATE TABLE `direcciones` (
   PRIMARY KEY (`Cod_direc`),
   KEY `FK_COD_USUARIO_idx` (`Cod_Usuario`),
   CONSTRAINT `FK_COD_USUARIO` FOREIGN KEY (`Cod_Usuario`) REFERENCES `usuarios` (`Cod_Usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,13 +207,39 @@ CREATE TABLE `usuarios` (
   `Seg_ape` varchar(25) DEFAULT NULL,
   `Email` varchar(45) NOT NULL,
   `Contraseña` varchar(10) NOT NULL,
-  PRIMARY KEY (`Cod_Usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Cod_Usuario`),
+  UNIQUE KEY `Email_UNIQUE` (`Email`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping routines for database 'pupuseria_final'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `ActualizarContrasena` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ActualizarContrasena`(IN In_Contrasena VARCHAR(10), IN IN_Email varchar(45))
+    READS SQL DATA
+BEGIN declare error int;
+start transaction;
+UPDATE usuarios set contraseña = In_Contrasena where Email = IN_Email;
+SET error=(SELECT @error);
+IF(error=0) THEN ROLLBACK;
+ELSE COMMIT;
+END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `InsertarDireccion` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -293,4 +319,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-18 20:39:27
+-- Dump completed on 2020-10-22 16:36:13
