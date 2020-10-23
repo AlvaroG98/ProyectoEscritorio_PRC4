@@ -23,7 +23,7 @@ public class CambioContra extends javax.swing.JFrame {
     public String getActualizar() {
         return Actualizar;
     }
-    
+
     private String Actualizar = "CALL ActualizarContrasena(?,?)";
     private docWriter dw = new docWriter();
     private Connection cnn;
@@ -124,31 +124,29 @@ public class CambioContra extends javax.swing.JFrame {
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
-        PerfilDeUsuario ventana = new PerfilDeUsuario();
-        ventana.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
         // TODO add your handling code here:
-        if(dw.LeerContra().equals(txbContra.getText())){
-            if(txbContraNueva.getText().equals(txbContraConfirm.getText())){
-                try{
+        if (dw.LeerContra().equals(txbContra.getText())) {
+            if (txbContraNueva.getText().equals(txbContraConfirm.getText())) {
+                try {
                     javax.swing.JOptionPane.showMessageDialog(this, ActualizarContra(txbContraNueva.getText(), dw.Leer()), "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                }
-                catch(Exception ex){
+                } catch (Exception ex) {
                     Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, "Error", ex);
                 }
-            }
-            else{
+            } else {
                 ///No se pudo
+                javax.swing.JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
             }
-        }
-        else{
+        } else {
             ///No es la misma contraseña
+            javax.swing.JOptionPane.showMessageDialog(this, "Error, la contraseña de usuario no es correcta", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
         }
     }//GEN-LAST:event_btnCambiarActionPerformed
-
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -182,7 +180,7 @@ public class CambioContra extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public String ActualizarContra(String contra, String email) {
         String resultado;
         try {
@@ -201,7 +199,7 @@ public class CambioContra extends javax.swing.JFrame {
         }
         return resultado;
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnCerrar;
