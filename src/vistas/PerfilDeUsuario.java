@@ -31,9 +31,8 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         lblEmail = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         btnNuevaDireccion = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txaDireccion = new javax.swing.JTextArea();
         btnCerrarSesion = new javax.swing.JButton();
+        lstDirecciones = new java.awt.List();
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Email");
@@ -68,10 +67,6 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
 
         btnNuevaDireccion.setText("Nueva dirección");
 
-        txaDireccion.setColumns(20);
-        txaDireccion.setRows(5);
-        jScrollPane1.setViewportView(txaDireccion);
-
         btnCerrarSesion.setText("Cerrar Sesión");
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,14 +95,11 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                             .addComponent(txbNombre, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txbEmail, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(btnActualizar)
-                                        .addGap(18, 18, 18))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-                                        .addGap(24, 24, 24)))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnActualizar)
+                                    .addComponent(lstDirecciones, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnCambiarContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnNuevaDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -123,24 +115,24 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                 .addComponent(lblEmail)
                 .addGap(18, 18, 18)
                 .addComponent(txbEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblNombre)
-                .addGap(18, 18, 18)
-                .addComponent(txbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(btnNuevaDireccion)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(lblNombre)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCerrarSesion))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(18, 22, Short.MAX_VALUE)
+                        .addComponent(txbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCambiarContrasena)
                             .addComponent(btnActualizar))
-                        .addGap(33, 33, 33)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lstDirecciones, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnNuevaDireccion)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCerrarSesion)))
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -226,11 +218,10 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnNuevaDireccion;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JTextArea txaDireccion;
+    private java.awt.List lstDirecciones;
     private javax.swing.JTextField txbEmail;
     private javax.swing.JTextField txbNombre;
     // End of variables declaration//GEN-END:variables

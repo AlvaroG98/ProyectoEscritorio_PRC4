@@ -191,7 +191,7 @@ public class CambioContra extends javax.swing.JFrame {
             cmst.setString(1, contra);
             cmst.setString(2, email);
             cmst.execute();
-            resultado = " Los datos se ingresaron exitosamente !!!";
+            resultado = " Los datos se actualizaron exitosamente !!!";
             cnn.close();
         } catch (SQLException sqlex) {
             resultado = " No se realizo la operacion " + sqlex.getMessage();
