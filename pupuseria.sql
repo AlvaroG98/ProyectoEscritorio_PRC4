@@ -18,56 +18,143 @@ USE `pupuseria_final`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `bebidas`
+-- Table structure for table `acompanamiento`
 --
 
-DROP TABLE IF EXISTS `bebidas`;
+DROP TABLE IF EXISTS `acompanamiento`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bebidas` (
-  `Cod_Bebida` int(11) NOT NULL AUTO_INCREMENT,
-  `Tipo_bebida` varchar(35) NOT NULL,
-  PRIMARY KEY (`Cod_Bebida`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bebidas`
---
-
-LOCK TABLES `bebidas` WRITE;
-/*!40000 ALTER TABLE `bebidas` DISABLE KEYS */;
-INSERT INTO `bebidas` VALUES (1,'Coca cola'),(2,'Pepsi'),(3,'Horchata');
-/*!40000 ALTER TABLE `bebidas` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `detalle_ordenes`
---
-
-DROP TABLE IF EXISTS `detalle_ordenes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `detalle_ordenes` (
-  `Cod_Orden` int(11) NOT NULL,
-  `Cod_Producto` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL,
-  `Descuento` float NOT NULL,
-  PRIMARY KEY (`Cod_Orden`),
-  KEY `fk_cod_producto1` (`Cod_Producto`),
-  CONSTRAINT `fk_cod_ordendet1` FOREIGN KEY (`Cod_Orden`) REFERENCES `ordenes` (`Cod_Orden`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cod_producto1` FOREIGN KEY (`Cod_Producto`) REFERENCES `productos` (`Cod_Produc`) ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE `acompanamiento` (
+  `idacompanamiento` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `precio` float NOT NULL,
+  `idtipoacompanamiento` int(11) NOT NULL,
+  PRIMARY KEY (`idacompanamiento`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
+  KEY `FK_Tipo_acompanamiento_idx` (`idtipoacompanamiento`),
+  CONSTRAINT `FK_Tipo_acompanamiento` FOREIGN KEY (`idtipoacompanamiento`) REFERENCES `tipoacompanamiento` (`idtipoacompanamiento`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `detalle_ordenes`
+-- Dumping data for table `acompanamiento`
 --
 
-LOCK TABLES `detalle_ordenes` WRITE;
-/*!40000 ALTER TABLE `detalle_ordenes` DISABLE KEYS */;
-INSERT INTO `detalle_ordenes` VALUES (2,1,10,0.25);
-/*!40000 ALTER TABLE `detalle_ordenes` ENABLE KEYS */;
+LOCK TABLES `acompanamiento` WRITE;
+/*!40000 ALTER TABLE `acompanamiento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acompanamiento` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_ordenes_acom`
+--
+
+DROP TABLE IF EXISTS `detalle_ordenes_acom`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `detalle_ordenes_acom` (
+  `Cod_Detalle_Acomp` int(11) NOT NULL,
+  `Cod_Acompanamiento` int(11) NOT NULL,
+  `Cod_Ordenes` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`Cod_Detalle_Acomp`),
+  KEY `fk_detacom_cod_acompa_idx` (`Cod_Acompanamiento`),
+  KEY `fk_detacom_cod_ordenes_idx` (`Cod_Ordenes`),
+  CONSTRAINT `fk_detacom_cod_acompa` FOREIGN KEY (`Cod_Acompanamiento`) REFERENCES `acompanamiento` (`idacompanamiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_detacom_cod_ordenes` FOREIGN KEY (`Cod_Ordenes`) REFERENCES `ordenes` (`Cod_Orden`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_ordenes_acom`
+--
+
+LOCK TABLES `detalle_ordenes_acom` WRITE;
+/*!40000 ALTER TABLE `detalle_ordenes_acom` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_ordenes_acom` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_ordenes_especiales`
+--
+
+DROP TABLE IF EXISTS `detalle_ordenes_especiales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `detalle_ordenes_especiales` (
+  `Cod_Detalle_Especial` int(11) NOT NULL,
+  `Cod_Especial` int(11) NOT NULL,
+  `Cod_Ordenes` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`Cod_Detalle_Especial`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_ordenes_especiales`
+--
+
+LOCK TABLES `detalle_ordenes_especiales` WRITE;
+/*!40000 ALTER TABLE `detalle_ordenes_especiales` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_ordenes_especiales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_ordenes_pupusas`
+--
+
+DROP TABLE IF EXISTS `detalle_ordenes_pupusas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `detalle_ordenes_pupusas` (
+  `Cod_Detalle_Pupusas` int(11) NOT NULL,
+  `Cod_Pupusa` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  `Descuento` float NOT NULL,
+  `Cod_Ordenes` int(11) NOT NULL,
+  PRIMARY KEY (`Cod_Detalle_Pupusas`),
+  KEY `fk_cod_pupusa_idx` (`Cod_Pupusa`),
+  KEY `fk_cod_orden_idx` (`Cod_Ordenes`),
+  CONSTRAINT `fk_cod_orden` FOREIGN KEY (`Cod_Ordenes`) REFERENCES `ordenes` (`Cod_Orden`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cod_pupusa` FOREIGN KEY (`Cod_Pupusa`) REFERENCES `pupusas` (`Cod_Pupusa`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_ordenes_pupusas`
+--
+
+LOCK TABLES `detalle_ordenes_pupusas` WRITE;
+/*!40000 ALTER TABLE `detalle_ordenes_pupusas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_ordenes_pupusas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_pupusa_especial`
+--
+
+DROP TABLE IF EXISTS `detalle_pupusa_especial`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `detalle_pupusa_especial` (
+  `Cod_Detalle_PupaEsp` int(11) NOT NULL,
+  `Cod_Especial` int(11) NOT NULL,
+  `Cod_Ingre` int(11) NOT NULL,
+  PRIMARY KEY (`Cod_Detalle_PupaEsp`),
+  KEY `fk_detesp_cod_ingre_idx` (`Cod_Ingre`),
+  KEY `fk_detesp_cod_esp_idx` (`Cod_Especial`),
+  CONSTRAINT `fk_detesp_cod_esp` FOREIGN KEY (`Cod_Especial`) REFERENCES `pupusa_especial` (`Cod_Especial`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_detesp_cod_ingre` FOREIGN KEY (`Cod_Ingre`) REFERENCES `ingredientes` (`Cod_Ingre`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_pupusa_especial`
+--
+
+LOCK TABLES `detalle_pupusa_especial` WRITE;
+/*!40000 ALTER TABLE `detalle_pupusa_especial` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_pupusa_especial` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -131,6 +218,30 @@ INSERT INTO `empleados` VALUES (1,'Juan','Antonio','Perez','Hernandez','juanpere
 UNLOCK TABLES;
 
 --
+-- Table structure for table `harinas`
+--
+
+DROP TABLE IF EXISTS `harinas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `harinas` (
+  `Cod_Harina` int(11) NOT NULL,
+  `Nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`Cod_Harina`),
+  UNIQUE KEY `Nombre_UNIQUE` (`Nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `harinas`
+--
+
+LOCK TABLES `harinas` WRITE;
+/*!40000 ALTER TABLE `harinas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `harinas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ingredientes`
 --
 
@@ -170,7 +281,7 @@ CREATE TABLE `ordenes` (
   PRIMARY KEY (`Cod_Orden`),
   KEY `fk_cod_usuario2` (`Cod_Usuario`),
   CONSTRAINT `fk_cod_usuario2` FOREIGN KEY (`Cod_Usuario`) REFERENCES `usuarios` (`Cod_Usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,67 +290,32 @@ CREATE TABLE `ordenes` (
 
 LOCK TABLES `ordenes` WRITE;
 /*!40000 ALTER TABLE `ordenes` DISABLE KEYS */;
-INSERT INTO `ordenes` VALUES (2,'Disponible',1,'2020-10-17'),(3,'Disponible',1,'2020-10-17');
 /*!40000 ALTER TABLE `ordenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `postres`
+-- Table structure for table `pupusa_especial`
 --
 
-DROP TABLE IF EXISTS `postres`;
+DROP TABLE IF EXISTS `pupusa_especial`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `postres` (
-  `Cod_postre` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_postre` varchar(35) NOT NULL,
-  PRIMARY KEY (`Cod_postre`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `pupusa_especial` (
+  `Cod_Especial` int(11) NOT NULL,
+  `Cod_Harina` int(11) NOT NULL,
+  PRIMARY KEY (`Cod_Especial`),
+  KEY `fk_esp_cod_harina_idx` (`Cod_Harina`),
+  CONSTRAINT `fk_esp_cod_harina` FOREIGN KEY (`Cod_Harina`) REFERENCES `harinas` (`Cod_Harina`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `postres`
+-- Dumping data for table `pupusa_especial`
 --
 
-LOCK TABLES `postres` WRITE;
-/*!40000 ALTER TABLE `postres` DISABLE KEYS */;
-INSERT INTO `postres` VALUES (1,'Tres leches'),(2,'Budin');
-/*!40000 ALTER TABLE `postres` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `productos`
---
-
-DROP TABLE IF EXISTS `productos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `productos` (
-  `Cod_Produc` int(11) NOT NULL AUTO_INCREMENT,
-  `Cod_Pupusa` int(11) DEFAULT NULL,
-  `Cod_Postre` int(11) DEFAULT NULL,
-  `Cod_Bebida` int(11) DEFAULT NULL,
-  `PrecioProducto` float NOT NULL,
-  `Descripcion` varchar(35) NOT NULL,
-  `Foto` blob NOT NULL,
-  PRIMARY KEY (`Cod_Produc`),
-  KEY `fk_cod_bebida1` (`Cod_Bebida`),
-  KEY `fk_cod_postre1` (`Cod_Postre`),
-  KEY `fk_cod_pupusa1` (`Cod_Pupusa`),
-  CONSTRAINT `fk_cod_bebida1` FOREIGN KEY (`Cod_Bebida`) REFERENCES `bebidas` (`Cod_Bebida`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cod_postre1` FOREIGN KEY (`Cod_Postre`) REFERENCES `postres` (`Cod_postre`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cod_pupusa1` FOREIGN KEY (`Cod_Pupusa`) REFERENCES `pupusas` (`Cod_Pupusa`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `productos`
---
-
-LOCK TABLES `productos` WRITE;
-/*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,1,1,1,1.25,'Pupusa de frijol y coca cola','C:UserslandoDownloadscommunication.png');
-/*!40000 ALTER TABLE `productos` ENABLE KEYS */;
+LOCK TABLES `pupusa_especial` WRITE;
+/*!40000 ALTER TABLE `pupusa_especial` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pupusa_especial` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -251,10 +327,12 @@ DROP TABLE IF EXISTS `pupusas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pupusas` (
   `Cod_Pupusa` int(11) NOT NULL AUTO_INCREMENT,
-  `Harina` varchar(10) NOT NULL,
+  `Cod_Harina` int(11) NOT NULL,
   `Cod_Ingre` int(11) NOT NULL,
   PRIMARY KEY (`Cod_Pupusa`),
   KEY `fk_cod_ingre` (`Cod_Ingre`),
+  KEY `fk_cod_harina_idx` (`Cod_Harina`),
+  CONSTRAINT `fk_cod_harina` FOREIGN KEY (`Cod_Harina`) REFERENCES `harinas` (`Cod_Harina`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cod_ingre` FOREIGN KEY (`Cod_Ingre`) REFERENCES `ingredientes` (`Cod_Ingre`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -265,7 +343,6 @@ CREATE TABLE `pupusas` (
 
 LOCK TABLES `pupusas` WRITE;
 /*!40000 ALTER TABLE `pupusas` DISABLE KEYS */;
-INSERT INTO `pupusas` VALUES (1,'Tradiciona',1),(2,'Especial',2);
 /*!40000 ALTER TABLE `pupusas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,6 +361,31 @@ SET character_set_client = utf8;
  1 AS `Prim_ape`,
  1 AS `Seg_ape`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `tipoacompanamiento`
+--
+
+DROP TABLE IF EXISTS `tipoacompanamiento`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoacompanamiento` (
+  `idtipoacompanamiento` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idtipoacompanamiento`),
+  UNIQUE KEY `Nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipoacompanamiento`
+--
+
+LOCK TABLES `tipoacompanamiento` WRITE;
+/*!40000 ALTER TABLE `tipoacompanamiento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tipoacompanamiento` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `usuarios`
@@ -311,7 +413,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'0','0','0','0','0','0'),(2,'asasv','vdvfsd','vsdvs','dqw','qwfew','1234'),(3,'Orlando','Josue','Cortez','Santos','sfweiufnwe','1234'),(4,'Gerson','Daniel','Morales','Landaverde','hola@gmail.com','1234'),(5,'Alvaro','Calderon','Guillermo','Bonilla','safsfas','1234'),(6,'Gerson','Daniel','Morales','Landaverde','gmorales','1234'),(7,'El','John','Bon','Jovi','jonbonjovi','1234'),(8,'Chris','Tofer','En','Gel','cteg','1234');
+INSERT INTO `usuarios` VALUES (1,'0','0','0','0','0','0'),(2,'asasv','vdvfsd','vsdvs','dqw','qwfew','1234'),(3,'Orlando','Josue','Cortez','Santos','sfweiufnwe','1234'),(4,'Gerson','Daniel','Morales','Landaverde','hola@gmail.com','1234'),(5,'Alvaro','Calderon','Guillermo','Bonilla','safsfas','1234'),(6,'Juan','Daniel','Morales','Landaverde','gmorales','1234'),(7,'El','John','Bon','Jovi','jonbonjovi','1234'),(8,'Chris','Tofer','En','Gel','cteg','1234');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,4 +581,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-22 22:42:13
+-- Dump completed on 2020-11-01 12:36:02
