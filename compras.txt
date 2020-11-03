@@ -1,0 +1,9 @@
+pupusaFrijol,Queso,Arroz,2
+pupusaFrijol,Frijol,Maiz,3
+pupusaFrijol,Queso,Arroz,9
+pupusaFrijol,Queso,Maiz,1
+pupusaFrijol,Queso,Maiz,5
+pupusaFrijol,Frijol,Maiz,10
+pupusaFrijol,Queso,Maiz,3
+BebidaCocacola,1
+PostreBudin,1

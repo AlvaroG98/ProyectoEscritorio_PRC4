@@ -5,7 +5,9 @@
  */
 package vistas;
 
+import controlador.ComprasWriter;
 import java.awt.Image;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -70,6 +72,11 @@ public class menu extends javax.swing.JFrame {
         btnAceptarBP = new javax.swing.JButton();
         btnCancelarBP = new javax.swing.JButton();
         lblNombre = new javax.swing.JLabel();
+        BtnAgregarCoca = new javax.swing.JButton();
+        BtnPepsi = new javax.swing.JButton();
+        BtnHorchata = new javax.swing.JButton();
+        BtnBudin = new javax.swing.JButton();
+        BtnTresLeches = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -124,6 +131,41 @@ public class menu extends javax.swing.JFrame {
 
         lblNombre.setFont(new java.awt.Font("Corbel", 1, 24)); // NOI18N
         lblNombre.setText("Productos");
+
+        BtnAgregarCoca.setText("Agregar");
+        BtnAgregarCoca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnAgregarCocaMouseClicked(evt);
+            }
+        });
+
+        BtnPepsi.setText("Agregar");
+        BtnPepsi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnPepsiMouseClicked(evt);
+            }
+        });
+
+        BtnHorchata.setText("Agregar");
+        BtnHorchata.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnHorchataMouseClicked(evt);
+            }
+        });
+
+        BtnBudin.setText("Agregar");
+        BtnBudin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnBudinMouseClicked(evt);
+            }
+        });
+
+        BtnTresLeches.setText("Agregar");
+        BtnTresLeches.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnTresLechesMouseClicked(evt);
+            }
+        });
 
         jMenu1.setText("Pupusas");
 
@@ -224,16 +266,17 @@ public class menu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelarBP)
-                .addGap(26, 26, 26)
-                .addComponent(btnAceptarBP)
-                .addGap(301, 301, 301))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(BtnAgregarCoca)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(BtnTresLeches)
+                                .addGap(39, 39, 39)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblLeches)
@@ -246,7 +289,7 @@ public class menu extends javax.swing.JFrame {
                             .addComponent(lblCoca)
                             .addGap(18, 18, 18)
                             .addComponent(btnC1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,7 +300,7 @@ public class menu extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lblNombre)
                                 .addComponent(imgpepsi, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(78, 99, Short.MAX_VALUE)
+                        .addGap(78, 85, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(lblHorchata)
@@ -265,21 +308,37 @@ public class menu extends javax.swing.JFrame {
                                 .addComponent(btnC3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(imghorchata, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(BtnPepsi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(imgbudin, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnBudin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(109, 109, 109)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BtnHorchata)
+                                .addGap(44, 44, 44))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(BtnBudin)
+                                .addGap(15, 15, 15)))))
                 .addGap(51, 51, 51))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancelarBP)
+                .addGap(26, 26, 26)
+                .addComponent(btnAceptarBP)
+                .addGap(300, 300, 300))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(lblNombre)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(imghorchata, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(imgcoca, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,14 +355,22 @@ public class menu extends javax.swing.JFrame {
                         .addComponent(btnC2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imgbudin, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(imgleches, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLeches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(lblLeches)
-                    .addComponent(btnBudin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BtnHorchata)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(imgbudin, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(imgleches, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BtnPepsi)
+                            .addComponent(BtnAgregarCoca))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BtnTresLeches)
+                            .addComponent(btnLeches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(lblLeches)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnBudin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(BtnBudin)))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptarBP)
@@ -391,6 +458,86 @@ public class menu extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void BtnAgregarCocaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnAgregarCocaMouseClicked
+        // TODO add your handling code here:
+        String fila = "BebidaCocacola,";
+        fila += btnC1.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_BtnAgregarCocaMouseClicked
+
+    private void BtnPepsiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnPepsiMouseClicked
+        // TODO add your handling code here:
+        String fila = "BebidaPepsi,";
+        fila += btnC1.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_BtnPepsiMouseClicked
+
+    private void BtnHorchataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnHorchataMouseClicked
+        // TODO add your handling code here:
+        String fila = "BebidaHorchata,";
+        fila += btnC1.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_BtnHorchataMouseClicked
+
+    private void BtnTresLechesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnTresLechesMouseClicked
+        // TODO add your handling code here:
+        String fila = "PostreTresLeches,";
+        fila += btnC1.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_BtnTresLechesMouseClicked
+
+    private void BtnBudinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnBudinMouseClicked
+        // TODO add your handling code here:
+        String fila = "PostreBudin,";
+        fila += btnC1.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_BtnBudinMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -427,6 +574,11 @@ public class menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnAgregarCoca;
+    private javax.swing.JButton BtnBudin;
+    private javax.swing.JButton BtnHorchata;
+    private javax.swing.JButton BtnPepsi;
+    private javax.swing.JButton BtnTresLeches;
     private javax.swing.JButton btnAceptarBP;
     private javax.swing.JSpinner btnBudin;
     private javax.swing.JSpinner btnC1;

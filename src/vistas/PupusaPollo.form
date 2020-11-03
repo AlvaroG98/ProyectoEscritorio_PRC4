@@ -254,7 +254,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="24" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Pupusa de Frijol"/>
+        <Property name="text" type="java.lang.String" value="Pupusa de Pollo"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="btnMaiz">
@@ -279,6 +279,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Agregar"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnAgregarMouseClicked"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>

@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import controlador.ComprasWriter;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,7 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.conexion;
 import modelo.ingredientes;
-import java.awt.List;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,25 +55,8 @@ public class PupusaFrijol extends javax.swing.JFrame {
         this.Ingrediente = Ingrediente;
     }
 
-    public void CargarDatos() {
-        try {
-            if (this.primerCargar) {
-                Connection cnn;
-                int cont = 0;
-                cnn = conexion.Conectar();
-                Statement smt = cnn.createStatement();
-                ResultSet rs = smt.executeQuery(this.Seleccionar);
-                while (rs.next()) {
-                    this.Ingrediente = rs.getString(1);
-                    cont++;
-                }
-                this.primerCargar=false;
-            }
+    
 
-        } catch (SQLException ex) {
-            Logger.getLogger(PerfilDeUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     public void MultiSelectList() throws Exception {
         File f = new File(Ingrediente);
         InputStream is = new FileInputStream(f);
@@ -80,7 +64,7 @@ public class PupusaFrijol extends javax.swing.JFrame {
         BufferedReader br = new BufferedReader(isr);
         final ArrayList<String> lines = new ArrayList<String>();
         line = br.readLine();
-        while (line!=null) {
+        while (line != null) {
             lines.add(line);
             line = br.readLine();
         }
@@ -88,14 +72,13 @@ public class PupusaFrijol extends javax.swing.JFrame {
             public void run() {
                 JList list = new JList(lines.toArray());
                 list.setSelectionMode(
-                    ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-                int[] select = {1,3};
+                        ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+                int[] select = {1, 3};
                 list.setSelectedIndices(select);
                 JOptionPane.showMessageDialog(null, new JScrollPane(list));
             }
         });
     }
-
 
     /**
      * Creates new form menu
@@ -111,7 +94,6 @@ public class PupusaFrijol extends javax.swing.JFrame {
         grupo1.add(btnArroz);
         grupo1.add(btnMaiz);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -196,6 +178,11 @@ public class PupusaFrijol extends javax.swing.JFrame {
         btncantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Frijol", "Queso" };
@@ -361,7 +348,7 @@ public class PupusaFrijol extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        CargarDatos();
+        
     }//GEN-LAST:event_formWindowActivated
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -441,11 +428,39 @@ public class PupusaFrijol extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jMenu3MouseClicked
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String fila = "pupusaFrijol,";
+        if (jList1.isSelectedIndex(0)) {
+            fila += jList1.getSelectedValue() + ",";
+        }
+        if (jList1.isSelectedIndex(1)) {
+            fila += jList1.getSelectedValue() + ",";
+        }
+        if (btnMaiz.isSelected()) {
+            fila += btnMaiz.getText() + ",";
+        }
+        if (btnArroz.isSelected()) {
+            fila += btnArroz.getText() + ",";
+        }
+
+        fila += btncantidad.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

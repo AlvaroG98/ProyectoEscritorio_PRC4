@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import controlador.ComprasWriter;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -196,6 +197,11 @@ public class PupusaChicharron extends javax.swing.JFrame {
         btncantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Chicharron", "Ajo" };
@@ -439,6 +445,34 @@ public class PupusaChicharron extends javax.swing.JFrame {
         esp.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String fila = "pupusaChicharron,";
+        if (jList1.isSelectedIndex(0)) {
+            fila += jList1.getSelectedValue() + ",";
+        }
+        if (jList1.isSelectedIndex(1)) {
+            fila += jList1.getSelectedValue() + ",";
+        }
+        if (btnMaiz.isSelected()) {
+            fila += btnMaiz.getText() + ",";
+        }
+        if (btnArroz.isSelected()) {
+            fila += btnArroz.getText() + ",";
+        }
+
+        fila += btncantidad.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.Escribir(fila);
+        java.util.List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
