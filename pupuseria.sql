@@ -42,6 +42,7 @@ CREATE TABLE `acompanamiento` (
 
 LOCK TABLES `acompanamiento` WRITE;
 /*!40000 ALTER TABLE `acompanamiento` DISABLE KEYS */;
+INSERT INTO `acompanamiento` VALUES (1,'Cocacola',0.65,1),(2,'Pepsi',0.6,1),(3,'Horchata',0.35,1),(4,'Tres leches',1.75,2),(5,'Budin',1,2);
 /*!40000 ALTER TABLE `acompanamiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,6 +72,7 @@ CREATE TABLE `detalle_ordenes_acom` (
 
 LOCK TABLES `detalle_ordenes_acom` WRITE;
 /*!40000 ALTER TABLE `detalle_ordenes_acom` DISABLE KEYS */;
+INSERT INTO `detalle_ordenes_acom` VALUES (1,1,1,2),(2,4,1,1);
 /*!40000 ALTER TABLE `detalle_ordenes_acom` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,6 +98,7 @@ CREATE TABLE `detalle_ordenes_especiales` (
 
 LOCK TABLES `detalle_ordenes_especiales` WRITE;
 /*!40000 ALTER TABLE `detalle_ordenes_especiales` DISABLE KEYS */;
+INSERT INTO `detalle_ordenes_especiales` VALUES (1,1,1,2),(2,2,1,1);
 /*!40000 ALTER TABLE `detalle_ordenes_especiales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,6 +129,7 @@ CREATE TABLE `detalle_ordenes_pupusas` (
 
 LOCK TABLES `detalle_ordenes_pupusas` WRITE;
 /*!40000 ALTER TABLE `detalle_ordenes_pupusas` DISABLE KEYS */;
+INSERT INTO `detalle_ordenes_pupusas` VALUES (1,2,1,0,1),(2,1,2,0,1);
 /*!40000 ALTER TABLE `detalle_ordenes_pupusas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,8 +158,24 @@ CREATE TABLE `detalle_pupusa_especial` (
 
 LOCK TABLES `detalle_pupusa_especial` WRITE;
 /*!40000 ALTER TABLE `detalle_pupusa_especial` DISABLE KEYS */;
+INSERT INTO `detalle_pupusa_especial` VALUES (1,1,1),(2,1,2),(3,1,4),(4,2,2),(5,2,5);
 /*!40000 ALTER TABLE `detalle_pupusa_especial` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `detalleordenes`
+--
+
+DROP TABLE IF EXISTS `detalleordenes`;
+/*!50001 DROP VIEW IF EXISTS `detalleordenes`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `detalleordenes` AS SELECT 
+ 1 AS `Cod_Orden`,
+ 1 AS `Nombre`,
+ 1 AS `Cantidad`,
+ 1 AS `Precio`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `direcciones`
@@ -174,7 +194,7 @@ CREATE TABLE `direcciones` (
   PRIMARY KEY (`Cod_direc`),
   KEY `FK_COD_USUARIO_idx` (`Cod_Usuario`),
   CONSTRAINT `FK_COD_USUARIO` FOREIGN KEY (`Cod_Usuario`) REFERENCES `usuarios` (`Cod_Usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +203,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (2,'San salvador','5a AV note calle #3','Tienda azul',78787654,1),(3,'Santa tecla','8a AV note calle #4','Tienda roja',76543432,2),(4,'San Ignacio','Calle principal','Colegio Amigos',77777777,6),(5,'La Palma','Barrio El Centro','Iglesia',55555555,6),(6,'pruebamun','pruebadirec','pruebapunto',0,1);
+INSERT INTO `direcciones` VALUES (2,'San salvador','5a AV note calle #3','Tienda azul',78787654,1),(3,'Santa tecla','8a AV note calle #4','Tienda roja',76543432,2),(4,'San Ignacio','Calle principal','Colegio Amigos',77777777,6),(5,'La Palma','Barrio El Centro','Iglesia',55555555,6),(6,'pruebamun','pruebadirec','pruebapunto',0,1),(7,'Citala','Calle principal','Frente al parque',11111111,6);
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,6 +238,24 @@ INSERT INTO `empleados` VALUES (1,'Juan','Antonio','Perez','Hernandez','juanpere
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `encabezadoordenes`
+--
+
+DROP TABLE IF EXISTS `encabezadoordenes`;
+/*!50001 DROP VIEW IF EXISTS `encabezadoordenes`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `encabezadoordenes` AS SELECT 
+ 1 AS `Cod_Orden`,
+ 1 AS `Status`,
+ 1 AS `Nombre`,
+ 1 AS `Email`,
+ 1 AS `Fecha`,
+ 1 AS `ProcesoOrden`,
+ 1 AS `Direccion`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `harinas`
 --
 
@@ -238,6 +276,7 @@ CREATE TABLE `harinas` (
 
 LOCK TABLES `harinas` WRITE;
 /*!40000 ALTER TABLE `harinas` DISABLE KEYS */;
+INSERT INTO `harinas` VALUES (2,'Arroz'),(1,'Maiz');
 /*!40000 ALTER TABLE `harinas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,10 +317,14 @@ CREATE TABLE `ordenes` (
   `Status` varchar(35) NOT NULL,
   `Cod_Usuario` int(11) NOT NULL,
   `CreadaEl` date NOT NULL,
+  `ProcesoOrden` int(1) NOT NULL,
+  `Cod_Direccion` int(11) NOT NULL,
   PRIMARY KEY (`Cod_Orden`),
   KEY `fk_cod_usuario2` (`Cod_Usuario`),
+  KEY `fk_cod_direccion_idx` (`Cod_Direccion`),
+  CONSTRAINT `fk_cod_direccion` FOREIGN KEY (`Cod_Direccion`) REFERENCES `direcciones` (`Cod_direc`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cod_usuario2` FOREIGN KEY (`Cod_Usuario`) REFERENCES `usuarios` (`Cod_Usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,6 +333,7 @@ CREATE TABLE `ordenes` (
 
 LOCK TABLES `ordenes` WRITE;
 /*!40000 ALTER TABLE `ordenes` DISABLE KEYS */;
+INSERT INTO `ordenes` VALUES (1,'Activa',6,'2020-11-03',1,4);
 /*!40000 ALTER TABLE `ordenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,6 +359,7 @@ CREATE TABLE `pupusa_especial` (
 
 LOCK TABLES `pupusa_especial` WRITE;
 /*!40000 ALTER TABLE `pupusa_especial` DISABLE KEYS */;
+INSERT INTO `pupusa_especial` VALUES (1,1),(2,2);
 /*!40000 ALTER TABLE `pupusa_especial` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +379,7 @@ CREATE TABLE `pupusas` (
   KEY `fk_cod_harina_idx` (`Cod_Harina`),
   CONSTRAINT `fk_cod_harina` FOREIGN KEY (`Cod_Harina`) REFERENCES `harinas` (`Cod_Harina`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cod_ingre` FOREIGN KEY (`Cod_Ingre`) REFERENCES `ingredientes` (`Cod_Ingre`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -343,6 +388,7 @@ CREATE TABLE `pupusas` (
 
 LOCK TABLES `pupusas` WRITE;
 /*!40000 ALTER TABLE `pupusas` DISABLE KEYS */;
+INSERT INTO `pupusas` VALUES (1,1,1),(2,2,1),(3,1,2),(4,2,2),(5,1,3),(6,2,3);
 /*!40000 ALTER TABLE `pupusas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,7 +421,7 @@ CREATE TABLE `tipoacompanamiento` (
   `descripcion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idtipoacompanamiento`),
   UNIQUE KEY `Nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,6 +430,7 @@ CREATE TABLE `tipoacompanamiento` (
 
 LOCK TABLES `tipoacompanamiento` WRITE;
 /*!40000 ALTER TABLE `tipoacompanamiento` DISABLE KEYS */;
+INSERT INTO `tipoacompanamiento` VALUES (1,'Bebida','Refrescos, sodas, etc.'),(2,'Postre','Pasteles de la casa');
 /*!40000 ALTER TABLE `tipoacompanamiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -413,7 +460,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'0','0','0','0','0','0'),(2,'asasv','vdvfsd','vsdvs','dqw','qwfew','1234'),(3,'Orlando','Josue','Cortez','Santos','sfweiufnwe','1234'),(4,'Gerson','Daniel','Morales','Landaverde','hola@gmail.com','1234'),(5,'Alvaro','Calderon','Guillermo','Bonilla','safsfas','1234'),(6,'Juan','Daniel','Morales','Landaverde','gmorales','1234'),(7,'El','John','Bon','Jovi','jonbonjovi','1234'),(8,'Chris','Tofer','En','Gel','cteg','1234');
+INSERT INTO `usuarios` VALUES (1,'0','0','0','0','0','0'),(2,'asasv','vdvfsd','vsdvs','dqw','qwfew','1234'),(3,'Orlando','Josue','Cortez','Santos','sfweiufnwe','1234'),(4,'Gerson','Daniel','Morales','Landaverde','hola@gmail.com','1234'),(5,'Alvaro','Calderon','Guillermo','Bonilla','safsfas','1234'),(6,'Gerson','Daniel','Morales','Landaverde','gmorales','1234'),(7,'El','John','Bon','Jovi','jonbonjovi','1234'),(8,'Chris','Tofer','En','Gel','cteg','1234');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -537,6 +584,42 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Final view structure for view `detalleordenes`
+--
+
+/*!50001 DROP VIEW IF EXISTS `detalleordenes`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `detalleordenes` AS select `o`.`Cod_Orden` AS `Cod_Orden`,`a`.`nombre` AS `Nombre`,`doa`.`Cantidad` AS `Cantidad`,round(`a`.`precio`,2) AS `Precio` from ((`ordenes` `o` join `detalle_ordenes_acom` `doa` on((`o`.`Cod_Orden` = `doa`.`Cod_Ordenes`))) join `acompanamiento` `a` on((`a`.`idacompanamiento` = `doa`.`Cod_Acompanamiento`))) union select `o`.`Cod_Orden` AS `Cod_Orden`,concat(`i`.`Ingredientes`,' (',`h`.`Nombre`,')') AS `concat(i.Ingredientes, ' (', h.Nombre, ')')`,`dop`.`Cantidad` AS `Cantidad`,round(`i`.`Costo_Indiv`,2) AS `round(i.Costo_Indiv, 2)` from ((((`ordenes` `o` join `detalle_ordenes_pupusas` `dop` on((`o`.`Cod_Orden` = `dop`.`Cod_Ordenes`))) join `pupusas` `p` on((`p`.`Cod_Pupusa` = `dop`.`Cod_Pupusa`))) join `ingredientes` `i` on((`i`.`Cod_Ingre` = `p`.`Cod_Ingre`))) join `harinas` `h` on((`h`.`Cod_Harina` = `p`.`Cod_Harina`))) union select `o`.`Cod_Orden` AS `Cod_Orden`,concat((select group_concat(' ',`i`.`Ingredientes` separator ',') AS `ingredientes` from (`detalle_pupusa_especial` `dpe` join `ingredientes` `i` on((`i`.`Cod_Ingre` = `dpe`.`Cod_Ingre`))) where (`dpe`.`Cod_Especial` = `doe`.`Cod_Especial`) group by `dpe`.`Cod_Especial`),' (',`h`.`Nombre`,')') AS `Name_exp_10`,`doe`.`Cantidad` AS `Cantidad`,round((select sum(`i`.`Costo_Indiv`) from (`detalle_pupusa_especial` `dps` join `ingredientes` `i` on((`i`.`Cod_Ingre` = `dps`.`Cod_Ingre`))) where (`doe`.`Cod_Especial` = `dps`.`Cod_Especial`) group by `dps`.`Cod_Especial`),2) AS `Precio` from (((`ordenes` `o` join `detalle_ordenes_especiales` `doe` on((`o`.`Cod_Orden` = `doe`.`Cod_Ordenes`))) join `pupusa_especial` `ps` on((`ps`.`Cod_Especial` = `doe`.`Cod_Especial`))) join `harinas` `h` on((`h`.`Cod_Harina` = `ps`.`Cod_Harina`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `encabezadoordenes`
+--
+
+/*!50001 DROP VIEW IF EXISTS `encabezadoordenes`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `encabezadoordenes` AS select `o`.`Cod_Orden` AS `Cod_Orden`,`o`.`Status` AS `Status`,concat(`u`.`Prim_nom`,' ',`u`.`Seg_nom`,' ',`u`.`Prim_ape`,' ',`u`.`Seg_ape`) AS `Nombre`,`u`.`Email` AS `Email`,`o`.`CreadaEl` AS `Fecha`,`o`.`ProcesoOrden` AS `ProcesoOrden`,concat(`d`.`Direccion`,', ',`d`.`Municipio`,', ',`d`.`Punto_referen`) AS `Direccion` from ((`ordenes` `o` join `usuarios` `u` on((`u`.`Cod_Usuario` = `o`.`Cod_Usuario`))) join `direcciones` `d` on((`d`.`Cod_direc` = `o`.`Cod_Direccion`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `seleccionardatosusuario`
 --
 
@@ -581,4 +664,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-01 12:36:02
+-- Dump completed on 2020-11-04 12:50:25
