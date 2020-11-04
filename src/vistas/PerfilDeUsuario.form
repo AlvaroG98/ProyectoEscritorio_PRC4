@@ -257,7 +257,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnOrdenesActivas">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ordenes activas"/>
+        <Property name="text" type="java.lang.String" value="Historial de ordenes"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOrdenesActivasActionPerformed"/>

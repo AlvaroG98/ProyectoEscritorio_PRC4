@@ -124,7 +124,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         lblNombre3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblNombre3.setText("Segundo Apellido");
 
-        btnOrdenesActivas.setText("Ordenes activas");
+        btnOrdenesActivas.setText("Historial de ordenes");
         btnOrdenesActivas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOrdenesActivasActionPerformed(evt);
