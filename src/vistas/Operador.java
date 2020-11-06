@@ -2,6 +2,7 @@
 package vistas;
 
 import controlador.docWriter;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,14 @@ import vistas.PerfilDeUsuario;
  */
 public class Operador extends javax.swing.JFrame {
 
+     private String ActualizarOperador = "CALL CambiarEstado(?,?)";
+     private Connection cnn;
+     private int Cod_Orden;
+     private int ProcesoOrden;
+     
+     public String getActualizarOperador(){
+     return ActualizarOperador;
+     }
     /**
      * Creates new form Operador
      */
@@ -28,8 +37,7 @@ public class Operador extends javax.swing.JFrame {
 "o.Cod_Direccion=d.Cod_direc\n" +
 "where Status like 'Activa';";
     private docWriter dw = new docWriter();
-    private Connection cnn;
-
+    private Connection cnn2;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,6 +50,8 @@ public class Operador extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbOperador = new javax.swing.JTable();
         jlbOperador = new javax.swing.JLabel();
+        btnModificar = new javax.swing.JButton();
+        cbOpciones = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -67,18 +77,40 @@ public class Operador extends javax.swing.JFrame {
         jlbOperador.setFont(new java.awt.Font("Ebrima", 1, 18)); // NOI18N
         jlbOperador.setText("OPERADOR DE ORDENES");
 
+        btnModificar.setText("Modificar Estado");
+        btnModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnModificarMouseClicked(evt);
+            }
+        });
+
+        cbOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1.Cocinando", "2.Listo", "3.Enviado", "4.Entregado" }));
+        cbOpciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbOpcionesMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(420, Short.MAX_VALUE)
-                .addComponent(jlbOperador)
-                .addGap(370, 370, 370))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 414, Short.MAX_VALUE)
+                        .addComponent(jlbOperador)
+                        .addGap(370, 370, 370))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(383, 383, 383)
+                .addComponent(btnModificar)
+                .addGap(49, 49, 49)
+                .addComponent(cbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,7 +119,11 @@ public class Operador extends javax.swing.JFrame {
                 .addComponent(jlbOperador)
                 .addGap(87, 87, 87)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnModificar)
+                    .addComponent(cbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
 
         pack();
@@ -97,6 +133,22 @@ public class Operador extends javax.swing.JFrame {
         // TODO add your handling code here:
         CargarOrdenes();
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModificarMouseClicked
+        // TODO add your handling code here:
+        int columna = 0;
+        int fila= jtbOperador.getSelectedRow();
+        int valor= Integer.parseInt(jtbOperador.getModel().getValueAt(fila, columna).toString());
+        String Estado = cbOpciones.getSelectedItem().toString();
+        int Proceso = Integer.parseInt(Estado.substring(0,1));
+        Actualizar(valor,Proceso);
+        CargarOrdenes();
+       
+    }//GEN-LAST:event_btnModificarMouseClicked
+
+    private void cbOpcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbOpcionesMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbOpcionesMouseClicked
 
     
     
@@ -186,8 +238,30 @@ public class Operador extends javax.swing.JFrame {
             }
         });
     }
+    
+    public String Actualizar(int Cod_Orden, int ProcesoOrden){
+    
+    String resultado;
+        try {
+            cnn2 = conexion.Conectar();
+            CallableStatement cmst = cnn2.prepareCall(getActualizarOperador());
+            cmst.setInt(1,Cod_Orden);
+            cmst.setInt(2, ProcesoOrden);
+            cmst.execute();
+            resultado = " Los datos se actualizaron exitosamente !!!";
+            cnn2.close();
+        } catch (SQLException sqlex) {
+            resultado = " No se realizo la operacion " + sqlex.getMessage();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            resultado = " No se realizo la operacion " + ex.getMessage();
+        }
+        return resultado;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JComboBox<String> cbOpciones;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlbOperador;
     private javax.swing.JTable jtbOperador;
