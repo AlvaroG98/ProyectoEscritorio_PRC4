@@ -5,21 +5,20 @@
  */
 package vistas;
 
+import controlador.ComprasWriter;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.conexion;
 import modelo.ingredientes;
-import java.awt.List;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,13 +31,15 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author Josue
  */
 public class PupusaFrijol extends javax.swing.JFrame {
-
+    private final static Logger log = LogManager.getLogger(PupusaFrijol.class);
     private String Seleccionar = "SELECT Ingredientes FROM vista_ingrediente;";
     private String Ingrediente;
     private boolean primerCargar = true;
@@ -70,9 +71,10 @@ public class PupusaFrijol extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(PerfilDeUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Error SQL " + ex.getMessage());
         }
     }
+
     public void MultiSelectList() throws Exception {
         File f = new File(Ingrediente);
         InputStream is = new FileInputStream(f);
@@ -80,7 +82,7 @@ public class PupusaFrijol extends javax.swing.JFrame {
         BufferedReader br = new BufferedReader(isr);
         final ArrayList<String> lines = new ArrayList<String>();
         line = br.readLine();
-        while (line!=null) {
+        while (line != null) {
             lines.add(line);
             line = br.readLine();
         }
@@ -88,14 +90,13 @@ public class PupusaFrijol extends javax.swing.JFrame {
             public void run() {
                 JList list = new JList(lines.toArray());
                 list.setSelectionMode(
-                    ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-                int[] select = {1,3};
+                        ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+                int[] select = {1, 3};
                 list.setSelectedIndices(select);
                 JOptionPane.showMessageDialog(null, new JScrollPane(list));
             }
         });
     }
-
 
     /**
      * Creates new form menu
@@ -111,7 +112,6 @@ public class PupusaFrijol extends javax.swing.JFrame {
         grupo1.add(btnArroz);
         grupo1.add(btnMaiz);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -149,6 +149,8 @@ public class PupusaFrijol extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
 
         jRadioButton3.setText("jRadioButton3");
 
@@ -179,6 +181,7 @@ public class PupusaFrijol extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -193,9 +196,14 @@ public class PupusaFrijol extends javax.swing.JFrame {
 
         btnArroz.setText("Arroz");
 
-        btncantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        btncantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Frijol", "Queso" };
@@ -298,6 +306,27 @@ public class PupusaFrijol extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setText("Carrito");
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu4MouseClicked(evt);
+            }
+        });
+        jMenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu4ActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("Perfil de usuario");
+        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu5MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu5);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -361,91 +390,147 @@ public class PupusaFrijol extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        CargarDatos();
+        
     }//GEN-LAST:event_formWindowActivated
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String fila = "";
+        if(btnMaiz.isSelected())
+        {
+            fila+="3,";
+        }
+        else
+        {
+            fila+="4,";
+        }
+        fila += "pupusaFrijol,";
+        if (jList1.isSelectedIndex(0)) {
+            fila += jList1.getSelectedValue() + ",";
+        }
+        if (jList1.isSelectedIndex(1)) {
+            fila += jList1.getSelectedValue() + ",";
+        }
+        if (btnMaiz.isSelected()) {
+            fila += btnMaiz.getText() + ",";
+        }
+        if (btnArroz.isSelected()) {
+            fila += btnArroz.getText() + ",";
+        }
+
+        fila += btncantidad.getValue().toString();
+        ComprasWriter compras = new ComprasWriter();
+        compras.EscribirPupa(fila);
+        javax.swing.JOptionPane.showMessageDialog(this, "Se agrego su pedido al carrito", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        List<String> lst = compras.Leer();
+        if (lst != null) {
+            for (String str : lst) {
+                System.out.println(str);
+            }
+        }else{
+            System.out.println("lista vacia");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         PupusaAjo pa = new PupusaAjo();
         pa.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         PupusaAyote pay = new PupusaAyote();
         pay.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         PupusaCamaron pc = new PupusaCamaron();
         pc.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
         PupusaChicharron pch = new PupusaChicharron();
         pch.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
         PupusaFrijol pf = new PupusaFrijol();
         pf.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         PupusaJalapeno pj = new PupusaJalapeno();
         pj.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
         PupusaLoroco pl = new PupusaLoroco();
         pl.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
         PupusaPollo pp = new PupusaPollo();
         pp.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
         PupusaQueso pq = new PupusaQueso();
         pq.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
         menu men = new menu();
         men.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
         // TODO add your handling code here:
         Especialidades esp = new Especialidades();
         esp.setVisible(true);
-        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        // TODO add your handling code here:
+        carrito ca = new carrito();
+        ca.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenu4MouseClicked
+
+    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu4ActionPerformed
+
+    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+        // TODO add your handling code here:
+        PerfilDeUsuario pdu = new PerfilDeUsuario();
+        pdu.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenu5MouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -483,6 +568,54 @@ public class PupusaFrijol extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -503,6 +636,8 @@ public class PupusaFrijol extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

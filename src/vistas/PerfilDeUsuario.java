@@ -7,11 +7,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PerfilDeUsuario extends javax.swing.JFrame {
-
+    private final static Logger log = LogManager.getLogger(PerfilDeUsuario.class);
     private String Seleccionar = "select * from seleccionardatosusuario where Email = '";
     private String Actualizar = "CALL ActualizarNombreUsuario(?,?,?,?,?)";
     private String Direcciones = "select concat(Direccion, ', ', Municipio, ', Punto referencia: ', Punto_referen) as Direccion from pupuseria_final.direcciones where Cod_Usuario = (select Cod_Usuario from pupuseria_final.usuarios where Email = '";
@@ -54,11 +54,14 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         txbApellido = new javax.swing.JTextField();
         lblNombre3 = new javax.swing.JLabel();
         txbApellido2 = new javax.swing.JTextField();
+        btnOrdenesActivas = new javax.swing.JButton();
+        btnHacerPedido = new javax.swing.JButton();
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Email");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -121,21 +124,32 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         lblNombre3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblNombre3.setText("Segundo Apellido");
 
+        btnOrdenesActivas.setText("Historial de ordenes");
+        btnOrdenesActivas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrdenesActivasActionPerformed(evt);
+            }
+        });
+
+        btnHacerPedido.setText("Realizar un nuevo pedido");
+        btnHacerPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHacerPedidoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addComponent(lblTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNombre2)
-                            .addComponent(txbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnHacerPedido))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -150,6 +164,9 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                                     .addComponent(txbNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblNombre3)
                                     .addComponent(txbApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(lblEmail)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -159,11 +176,13 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnCambiarContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnNuevaDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(lblEmail)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(48, 48, 48))))
+                                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnOrdenesActivas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(33, 33, 33))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTitulo)
+                .addGap(204, 204, 204))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,14 +216,17 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCambiarContrasena)
-                    .addComponent(btnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lstDirecciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addComponent(btnActualizar)
+                    .addComponent(btnHacerPedido))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnOrdenesActivas)
+                        .addGap(18, 18, 18)
                         .addComponent(btnNuevaDireccion)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCerrarSesion)))
+                        .addComponent(btnCerrarSesion))
+                    .addComponent(lstDirecciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(35, 35, 35))
         );
 
@@ -230,6 +252,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         Identificate ventana = new Identificate();
         ventana.setVisible(true);
+        dw.cerrarSesion(Email);
         dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
@@ -252,7 +275,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, ActualizarNombre(txbEmail.getText(), txbNombre.getText(), txbNombre2.getText(), txbApellido.getText(), txbApellido2.getText()), "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 CargarNombre();
             } catch (Exception ex) {
-                Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, "Error", ex);
+                log.error("Error al actualizar " + ex.getMessage());;
             }
 
         }
@@ -264,6 +287,20 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
         ventana.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnNuevaDireccionActionPerformed
+
+    private void btnOrdenesActivasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenesActivasActionPerformed
+        // TODO add your handling code here:
+        OrdenesActivas ventana = new OrdenesActivas();
+        ventana.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnOrdenesActivasActionPerformed
+
+    private void btnHacerPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHacerPedidoActionPerformed
+        // TODO add your handling code here:
+        menu ventana = new menu();
+        ventana.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnHacerPedidoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -317,7 +354,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
             txbApellido2.setText(this.Apellido2);
             cnn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PerfilDeUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Error en SQL " + ex.getMessage());
         }
     }
 
@@ -335,7 +372,7 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(PerfilDeUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Error SQL " + ex.getMessage());
         }
     }
 
@@ -354,9 +391,11 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
             cnn.close();
         } catch (SQLException sqlex) {
             resultado = " No se realizo la operacion " + sqlex.getMessage();
+            log.error("No se realizo la operacion" + sqlex.getMessage());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             resultado = " No se realizo la operacion " + ex.getMessage();
+            log.error("No se realizo la operacion " + ex.getMessage());
         }
         return resultado;
     }
@@ -364,7 +403,9 @@ public class PerfilDeUsuario extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCambiarContrasena;
     private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnHacerPedido;
     private javax.swing.JButton btnNuevaDireccion;
+    private javax.swing.JButton btnOrdenesActivas;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNombre;

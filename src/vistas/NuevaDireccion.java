@@ -9,16 +9,16 @@ import controlador.docWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.conexion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author gerso
  */
 public class NuevaDireccion extends javax.swing.JFrame {
-
+    private final static Logger log = LogManager.getLogger(NuevaDireccion.class);
     private String Insertar = "CALL InsertarDireccion(?,?,?,?,?)";
     private Connection cnn;
 
@@ -46,9 +46,11 @@ public class NuevaDireccion extends javax.swing.JFrame {
             cnn.close();
         } catch (SQLException sqlex) {
             resultado = " No se realizo la operacion " + sqlex.getMessage();
+            log.error("No se realizo la operacion " + sqlex.getMessage());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             resultado = " No se realizo la operacion " + ex.getMessage();
+            log.error("No se realizo la operacion " + ex.getMessage());
         }
         return resultado;
     }
@@ -70,6 +72,7 @@ public class NuevaDireccion extends javax.swing.JFrame {
         txbTelefono = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitulo.setText("Nueva Dirección");
@@ -169,7 +172,7 @@ public class NuevaDireccion extends javax.swing.JFrame {
                 docWriter dw = new docWriter();
                 javax.swing.JOptionPane.showMessageDialog(this, InsertarDireccion(txbMunicipio.getText(), txbDireccion.getText(), txbPuntoReferencia.getText(), txbTelefono.getText(), dw.Leer()), "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
-                Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, "Error", ex);
+                log.error("No se realizo la operacion " + ex.getMessage());
             }
 
         } else {

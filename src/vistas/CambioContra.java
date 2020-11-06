@@ -9,12 +9,12 @@ import controlador.docWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.conexion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CambioContra extends javax.swing.JFrame {
-
+    private final static Logger log = LogManager.getLogger(CambioContra.class);
     public CambioContra() {
         initComponents();
         setLocationRelativeTo(null);
@@ -43,6 +43,7 @@ public class CambioContra extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         lblTitulo.setText("Cambio de contraseña");
@@ -134,16 +135,18 @@ public class CambioContra extends javax.swing.JFrame {
                 try {
                     javax.swing.JOptionPane.showMessageDialog(this, ActualizarContra(txbContraNueva.getText(), dw.Leer()), "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
-                    Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, "Error", ex);
+                    log.error("Error en intento de cambio de contraseña " + ex.getMessage());
                 }
             } else {
                 ///No se pudo
                 javax.swing.JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                log.error("No coinciden las contraseñas");
 
             }
         } else {
             ///No es la misma contraseña
             javax.swing.JOptionPane.showMessageDialog(this, "Error, la contraseña de usuario no es correcta", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            log.error("Contraseña no son las mismas al realizar el cambio");
 
         }
     }//GEN-LAST:event_btnCambiarActionPerformed
@@ -193,9 +196,11 @@ public class CambioContra extends javax.swing.JFrame {
             cnn.close();
         } catch (SQLException sqlex) {
             resultado = " No se realizo la operacion " + sqlex.getMessage();
+            log.error("No se realizo la actualizacion de contraseña " + sqlex.getMessage());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             resultado = " No se realizo la operacion " + ex.getMessage();
+            log.error("No se realizo la actualizacion de contraseña " + ex.getMessage());
         }
         return resultado;
     }

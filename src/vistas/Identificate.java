@@ -8,15 +8,15 @@ package vistas;
 import controlador.CheckPassword;
 import modelo.conexion;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vistas.PerfilDeUsuario;
 import vistas.Registrarse;
 import controlador.docWriter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Identificate extends javax.swing.JFrame {
-
+    private final static Logger log = LogManager.getLogger(Identificate.class);
     public Identificate() {
         initComponents();
         setLocationRelativeTo(null);
@@ -34,6 +34,7 @@ public class Identificate extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
         btnRegistrarse = new javax.swing.JButton();
+        cbVendedor = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +61,13 @@ public class Identificate extends javax.swing.JFrame {
             }
         });
 
+        cbVendedor.setText("Ingresar como vendedor");
+        cbVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbVendedorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -68,10 +76,6 @@ public class Identificate extends javax.swing.JFrame {
                 .addGap(0, 105, Short.MAX_VALUE)
                 .addComponent(lblTitulo)
                 .addGap(85, 85, 85))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(138, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(124, 124, 124))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -85,7 +89,13 @@ public class Identificate extends javax.swing.JFrame {
                         .addGap(86, 86, 86)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(btnRegistrarse)))
+                        .addComponent(btnRegistrarse))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addComponent(cbVendedor)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -105,9 +115,11 @@ public class Identificate extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(btnRegistrarse))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbVendedor)
+                .addGap(9, 9, 9)
                 .addComponent(jLabel3)
-                .addGap(45, 45, 45))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -127,7 +139,12 @@ public class Identificate extends javax.swing.JFrame {
                 //creando objeto de conexion
                 conexion con = new conexion();
                 //consulta
-                con.setRs("SELECT Cod_Usuario, Email, Contraseña FROM pupuseria_final.usuarios where Email ='" + txbEmail.getText() + "';");
+                if(cbVendedor.isSelected()){
+                    con.setRs("SELECT Cod_Empleado, Email, Contraseña FROM pupuseria_final.empleados where Email ='" + txbEmail.getText() + "';");
+                }
+                else{
+                    con.setRs("SELECT Cod_Usuario, Email, Contraseña FROM pupuseria_final.usuarios where Email ='" + txbEmail.getText() + "';");                    
+                }
                 //se obtienen los valores
                 ResultSet valor = (ResultSet) con.GetRs();
                 //Se mueve al unico registro devuelto
@@ -135,23 +152,37 @@ public class Identificate extends javax.swing.JFrame {
                     usuario = valor.getString(2);
                     pass = valor.getString(3);
                     if (usuario.equals(txbEmail.getText()) && pass.equals(txbContrasena.getText())) {
-                        PerfilDeUsuario ventana = new PerfilDeUsuario();
-                        ventana.setVisible(true);
-                        dw.escribir(usuario + '\n' + pass);
-                        dispose();
+                        if(cbVendedor.isSelected()){
+                            Operador op = new Operador ();
+                            op.setVisible(true);
+                            dw.escribir(usuario + '\n' + pass);
+                            dw.crearBitacora(usuario);
+                            dispose();
+                        }
+                        else{
+                            PerfilDeUsuario ventana = new PerfilDeUsuario();
+                            ventana.setVisible(true);
+                            dw.escribir(usuario + '\n' + pass);
+                            dw.crearBitacora(usuario);
+                            dispose();
+                        }
                     }
                     else{
                         JOptionPane.showMessageDialog(this, "Error, usuario o contraseña no coinciden");
+                        log.error(usuario+" Error usuario o contraseña no coincide");
                     }
                 }
                 else{
                     JOptionPane.showMessageDialog(this, "Error, usuario o contraseña no coinciden");
+                    log.error(usuario+" Error usuario o contraseña no coincide");
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "El password contiene caracteres invalidos");
+                log.error(usuario+" Error contraseña con caracteres invalidos");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Identificate.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("Error de SQL " + ex.getMessage());
+            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -161,6 +192,10 @@ public class Identificate extends javax.swing.JFrame {
         ventana.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
+
+    private void cbVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVendedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbVendedorActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -197,6 +232,7 @@ public class Identificate extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarse;
+    private javax.swing.JCheckBox cbVendedor;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblContrasena;

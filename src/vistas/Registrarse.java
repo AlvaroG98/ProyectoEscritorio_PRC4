@@ -7,18 +7,18 @@ package vistas;
 
 import controlador.CheckPassword;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vistas.Identificate;
 
 public class Registrarse extends javax.swing.JFrame {
-
+    private final static Logger log = LogManager.getLogger(Registrarse.class);
     /**
      * Creates new form Registrarse
      */
@@ -49,9 +49,11 @@ public class Registrarse extends javax.swing.JFrame {
             cnn.close();
         } catch (SQLException sqlex) {
             resultado = " No se realizo la operacion " + sqlex.getMessage();
+            log.error("No se realizo la operacion " + sqlex.getMessage());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             resultado = " No se realizo la operacion " + ex.getMessage();
+            log.error("No se realizo la operacion " + ex.getMessage());
         }
         return resultado;
     }
@@ -212,7 +214,7 @@ public class Registrarse extends javax.swing.JFrame {
 
                 } catch (Exception ex) {
 
-                    Logger.getLogger(Registrarse.class.getName()).log(Level.SEVERE, "Error", ex);
+                    log.error("Error SQL " + ex.getMessage());
                 }
             }
             else
