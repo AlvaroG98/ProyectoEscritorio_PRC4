@@ -52,6 +52,7 @@ public class Operador extends javax.swing.JFrame {
         jlbOperador = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
         cbOpciones = new javax.swing.JComboBox<>();
+        btnCerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -91,6 +92,13 @@ public class Operador extends javax.swing.JFrame {
             }
         });
 
+        btnCerrarSesion.setText("Cerrar Sesión");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,6 +119,10 @@ public class Operador extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addComponent(cbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCerrarSesion)
+                .addGap(420, 420, 420))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +135,9 @@ public class Operador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar)
                     .addComponent(cbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(btnCerrarSesion)
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
@@ -149,6 +163,13 @@ public class Operador extends javax.swing.JFrame {
     private void cbOpcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbOpcionesMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_cbOpcionesMouseClicked
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        Identificate ventana = new Identificate();
+        ventana.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     
     
@@ -260,6 +281,7 @@ public class Operador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> cbOpciones;
     private javax.swing.JScrollPane jScrollPane1;

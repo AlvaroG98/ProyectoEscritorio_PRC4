@@ -153,7 +153,10 @@ public class Identificate extends javax.swing.JFrame {
                     pass = valor.getString(3);
                     if (usuario.equals(txbEmail.getText()) && pass.equals(txbContrasena.getText())) {
                         if(cbVendedor.isSelected()){
-                            
+                            Operador op = new Operador ();
+                            op.setVisible(true);
+                            dw.escribir(usuario + '\n' + pass);
+                            dispose();
                         }
                         else{
                             PerfilDeUsuario ventana = new PerfilDeUsuario();
