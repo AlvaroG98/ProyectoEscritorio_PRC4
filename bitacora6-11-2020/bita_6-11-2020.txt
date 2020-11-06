@@ -1,0 +1,5 @@
+Entrada: hola@gmail.com a las 14:35:30 en la fecha 6-11-2020
+Salida: hola@gmail.com a las 14:38:52 en la fecha 6-11-2020
+Entrada: mauricio@gmail.com a las 14:44:24 en la fecha 6-11-2020
+Entrada: mauricio@gmail.com a las 14:47:28 en la fecha 6-11-2020
+Salida: Empleado a las 14:47:31 en la fecha 6-11-2020
